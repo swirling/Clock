@@ -2,6 +2,7 @@ var menubar = require('menubar');
 var canvasBuffer = require('electron-canvas-to-buffer');
 var nativeImage = require('electron').nativeImage;
 var ipcMain = require('electron').ipcMain;
+var path = require('path');
 var mb = menubar({
   width: 100,
   height: 100
@@ -11,9 +12,13 @@ var t = null;
 mb.on('ready', function () {
   console.log('loaded');
 });
-ipcMain.on('asynchronous-message', function (event, arg, count) {
+ipcMain.on('asynchronous-message', function (event, arg, count, now) {
   var img = nativeImage.createFromBuffer(arg, 2);
   mb.tray.setImage(img);
+  if (now >= 3 / 2 * Math.PI) {
+    mb.tray.setImage(path.join(__dirname, 'IconTemplate.png'));
+    return;
+  }
   t && clearTimeout(t);
   t = setTimeout(function () {
     event.sender.send('asynchronous-reply', 1 / count);
@@ -21,6 +26,7 @@ ipcMain.on('asynchronous-message', function (event, arg, count) {
 });
 
 /*
+setTextVersion
 function countDown (count) {
   mb.tray.setTitle(count);
   t && clearInterval(t);

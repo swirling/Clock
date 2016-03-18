@@ -12,7 +12,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "build": "electron-packager . Example --platform=darwin --arch=x64 --version=0.36.11 --icon=Icon.icns",
+    "build": "electron-packager . zClock --platform=darwin --arch=x64 --version=0.36.11 --icon=Icon.icns",
     "start": "electron ."
   }
 }
